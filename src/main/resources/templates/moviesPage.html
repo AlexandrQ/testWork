@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Movies</title>
+
+    <link href="../extjs/build/classic/theme-classic/resources/theme-classic-all.css" rel="stylesheet" />
+    <script type="text/javascript" src="../extjs/build/ext-all-debug.js"></script>
+    <script type="text/javascript" src="../extjs/build/ext-all.js"></script>
+
+    <script th:inline="javascript">
+         Ext.define('MovieDataModel', {
+            extend: 'Ext.data.Model',
+            fields: [
+               {name: 'id', mapping : 'id'},
+               {name: 'name', mapping : 'name'},
+               {name: 'releaseDate', mapping : 'releaseDate'},
+               {name: 'budget', mapping : 'budget'},
+               {name: 'grossWorldwide', mapping : 'grossWorldwide'}
+            ]
+         });
+
+         Ext.onReady(function() {
+            var myData = JSON.parse([[${jsonMoviesModels}]]);
+            var gridStore = Ext.create('Ext.data.Store', {
+               model: 'MovieDataModel',
+               data: myData
+            });
+
+            Ext.create('Ext.grid.Panel', {
+               id                : 'gridId',
+               store             : gridStore,
+               stripeRows        : true,
+               title             : 'Movies Grid',
+               renderTo          :'gridDiv',
+               width             : 600,
+               collapsible       : true,
+               enableColumnMove  :true,
+               enableColumnResize:true,
+
+               columns           :
+               [{
+                  header: "Movie Name",
+                  dataIndex: 'name',
+                  id : 'name',
+                  flex:  1,
+                  sortable: true,
+                  hideable: false
+               },{
+                  header: "Release Date",
+                  dataIndex: 'releaseDate',
+                  flex: .5,
+                  sortable: true,
+                  hideable: false
+               },{
+                  header: "Budget ($)",
+                  dataIndex: 'budget',
+                  flex: .5,
+                  sortable: true,
+                  hideable: false
+               },{
+                  header: "Gross Worldwide ($)",
+                  dataIndex: 'grossWorldwide',
+                  flex: .5,
+                  sortable: false
+               }]
+            });
+         });
+      </script>
+</head>
+<body>
+    <div id="gridDiv"></div>
+</body>
+</html>

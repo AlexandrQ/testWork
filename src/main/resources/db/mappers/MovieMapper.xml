@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MovieMapper">
+
+    <resultMap id="movieResultMap" type="movie">
+        <id property="id" column="id"/>
+        <result property="name" column="name" />
+        <result property="releaseDate" column="release_date" />
+        <result property="budget" column="budget" />
+        <result property="grossWorldwide" column="gross_worldwide" />
+    </resultMap>
+
+    <select id="getAllMovies" resultType="movie" resultMap="movieResultMap">
+        SELECT * FROM public.movies
+    </select>
+
+    <select id="getMovieById" parameterType="long" resultMap="movieResultMap">
+        SELECT * FROM public.movies
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertMovie" parameterType="movie">
+        INSERT INTO public.movies(name, release_date, budget, gross_worldwide, production_company_id)
+        VALUES (#{name}, #{releaseDate}, #{budget}, #{grossWorldwide}, #{productionCompanyId});
+    </insert>
+
+    <update id="updateMovie" parameterType="movie">
+        UPDATE public.movies
+        SET name=#{name}, release_date=#{releaseDate}, budget=#{budget}, gross_worldwide=#{grossWorldwide}, production_company_id=#{productionCompanyId}
+        WHERE id=#{id};
+    </update>
+
+    <delete id="deleteMovie" parameterType="Long">
+        DELETE FROM public.movies
+        WHERE id=#{id};
+    </delete>
+
+</mapper>
